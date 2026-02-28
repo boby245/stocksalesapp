@@ -1,6 +1,6 @@
 {
   "name": "stocksalesappdevelopemttype",
-  "version": "5.0.0",
+  "version": "115.0.0",
   "description": "Stock and Sales Management System with Electron + Node.js/Express backend",
   "main": "main.js",
   "scripts": {
@@ -89,3 +89,4 @@
   "license": "ISC",
   "type": "commonjs"
 }
+
