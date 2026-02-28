@@ -1,0 +1,31 @@
+name: Sync Version to JSON
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from package.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create or Update version.json
+        run: |
+          echo "{\"version\": \"${{ steps.get_version.outputs.VERSION }}\", \"releaseDate\": \"$(date +%Y-%m-%d)\"}" > version.json
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add version.json
+          git commit -m "System: Sync version.json to ${{ steps.get_version.outputs.VERSION }}" || exit 0
+          git push
